@@ -4,8 +4,8 @@
 [![license](https://img.shields.io/npm/l/graphbrainz-extension-spotify.svg)](https://github.com/exogen/graphbrainz-extension-spotify/blob/master/LICENSE)
 
 Retrieve information about MusicBrainz entities from [Spotify](https://www.spotify.com/)
-using the [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
-This project has no affiliation with Spotify.
+using GraphQL, calling the [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
+under the hood. This project has no affiliation with Spotify.
 
 The extension works by finding Spotify URLs in an entity’s URL relationships.
 The URL relationship must have the `streaming music` type and point to a Spotify
@@ -54,7 +54,7 @@ This extension uses its own cache, separate from the MusicBrainz loader cache.
 
 ## Example Queries
 
-Get the audio features and related artists for a track ([try it](<https://graphbrainz-extension-spotify.herokuapp.com/?query=%7B%0A%20%20lookup%20%7B%0A%20%20%20%20recording(mbid%3A%20%226c128cd9-94da-44fe-b74f-b68079fb1606%22)%20%7B%0A%20%20%20%20%20%20spotify%20%7B%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20audioFeatures%20%7B%0A%20%20%20%20%20%20%20%20%20%20acousticness%0A%20%20%20%20%20%20%20%20%20%20danceability%0A%20%20%20%20%20%20%20%20%20%20duration%0A%20%20%20%20%20%20%20%20%20%20energy%0A%20%20%20%20%20%20%20%20%20%20instrumentalness%0A%20%20%20%20%20%20%20%20%20%20keyName%0A%20%20%20%20%20%20%20%20%20%20liveness%0A%20%20%20%20%20%20%20%20%20%20loudness%0A%20%20%20%20%20%20%20%20%20%20mode%0A%20%20%20%20%20%20%20%20%20%20speechiness%0A%20%20%20%20%20%20%20%20%20%20tempo%0A%20%20%20%20%20%20%20%20%20%20timeSignature%0A%20%20%20%20%20%20%20%20%20%20valence%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20artists%20%7B%0A%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20relatedArtists%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20href%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A>)):
+Get the audio features and related artists for a track ([try it](<https://graphbrainz-extension-spotify.herokuapp.com/?query=%7B%0A%20%20lookup%20%7B%0A%20%20%20%20recording(mbid%3A%20%226c128cd9-94da-44fe-b74f-b68079fb1606%22)%20%7B%0A%20%20%20%20%20%20spotify%20%7B%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20previewURL%0A%20%20%20%20%20%20%20%20audioFeatures%20%7B%0A%20%20%20%20%20%20%20%20%20%20acousticness%0A%20%20%20%20%20%20%20%20%20%20danceability%0A%20%20%20%20%20%20%20%20%20%20duration%0A%20%20%20%20%20%20%20%20%20%20energy%0A%20%20%20%20%20%20%20%20%20%20instrumentalness%0A%20%20%20%20%20%20%20%20%20%20keyName%0A%20%20%20%20%20%20%20%20%20%20liveness%0A%20%20%20%20%20%20%20%20%20%20loudness%0A%20%20%20%20%20%20%20%20%20%20mode%0A%20%20%20%20%20%20%20%20%20%20speechiness%0A%20%20%20%20%20%20%20%20%20%20tempo%0A%20%20%20%20%20%20%20%20%20%20timeSignature%0A%20%20%20%20%20%20%20%20%20%20valence%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20artists%20%7B%0A%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20relatedArtists%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20href%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A>)):
 
 ```graphql
 {
@@ -62,6 +62,7 @@ Get the audio features and related artists for a track ([try it](<https://graphb
     recording(mbid: "6c128cd9-94da-44fe-b74f-b68079fb1606") {
       spotify {
         title
+        previewURL
         audioFeatures {
           acousticness
           danceability
@@ -97,21 +98,21 @@ Get the audio features and related artists for a track ([try it](<https://graphb
 <details>
   <summary><strong>Table of Contents</strong></summary>
 
-  * [Objects](#objects)
-    * [Artist](#artist)
-    * [Recording](#recording)
-    * [Release](#release)
-    * [SpotifyAlbum](#spotifyalbum)
-    * [SpotifyArtist](#spotifyartist)
-    * [SpotifyAudioFeatures](#spotifyaudiofeatures)
-    * [SpotifyCopyright](#spotifycopyright)
-    * [SpotifyExternalID](#spotifyexternalid)
-    * [SpotifyExternalURL](#spotifyexternalurl)
-    * [SpotifyImage](#spotifyimage)
-    * [SpotifyTrack](#spotifytrack)
-  * [Enums](#enums)
-    * [SpotifyCopyrightType](#spotifycopyrighttype)
-    * [SpotifyTrackMode](#spotifytrackmode)
+- [Objects](#objects)
+  - [Artist](#artist)
+  - [Recording](#recording)
+  - [Release](#release)
+  - [SpotifyAlbum](#spotifyalbum)
+  - [SpotifyArtist](#spotifyartist)
+  - [SpotifyAudioFeatures](#spotifyaudiofeatures)
+  - [SpotifyCopyright](#spotifycopyright)
+  - [SpotifyExternalID](#spotifyexternalid)
+  - [SpotifyExternalURL](#spotifyexternalurl)
+  - [SpotifyImage](#spotifyimage)
+  - [SpotifyTrack](#spotifytrack)
+- [Enums](#enums)
+  - [SpotifyCopyrightType](#spotifycopyrighttype)
+  - [SpotifyTrackMode](#spotifytrackmode)
 
 </details>
 
@@ -119,7 +120,7 @@ Get the audio features and related artists for a track ([try it](<https://graphb
 
 #### Artist
 
-:small_blue_diamond: *This type has been extended.
+:small*blue_diamond: \_This type has been extended.
 See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
 
 <table>
@@ -146,7 +147,7 @@ The artist’s entry on Spotify.
 
 #### Recording
 
-:small_blue_diamond: *This type has been extended.
+:small*blue_diamond: \_This type has been extended.
 See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
 
 <table>
@@ -173,7 +174,7 @@ The recording’s entry on Spotify.
 
 #### Release
 
-:small_blue_diamond: *This type has been extended.
+:small*blue_diamond: \_This type has been extended.
 See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
 
 <table>
@@ -1057,3 +1058,5 @@ The minor scale.
 </table>
 
 <!-- END graphql-markdown -->
+
+[demo]: http://graphbrainz-extension-spotify.herokuapp.com/
