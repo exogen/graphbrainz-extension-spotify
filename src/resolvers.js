@@ -6,7 +6,7 @@ const debug = createLogger('graphbrainz-extension-spotify:resolvers')
 function findSpotifyID(entity, args, context) {
   // TODO: Make this more efficient by (1) being able to tell GraphBrainz
   // that we should fetch `url-rels` along with the artist when the
-  // `discogs` field is requested, and/or (2) adding the ability to check
+  // `spotify` field is requested, and/or (2) adding the ability to check
   // whether `url-rels` were already requested: otherwise we can't
   // distinguish between an item having no URL relationships and them just
   // not being requested yet.
