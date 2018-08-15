@@ -33,7 +33,6 @@
     "format": "npm run lint:fix",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "postinstall": "npm run build:lib",
     "precommit": "lint-staged",
     "prepare": "npm run clean && npm run build",
     "start": "node scripts/start.js",
