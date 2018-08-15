@@ -31,7 +31,7 @@ export default function createLoader(options) {
       }
       const otherRequests = []
       keys.forEach((key, i) => {
-        const [endpoint, id] = key
+        const endpoint = key[0]
         // Along with each key, store the index in the output array that the
         // key's request results should be stored under.
         if (entities[endpoint]) {
@@ -54,7 +54,7 @@ export default function createLoader(options) {
               const ids = chunk.map(([[endpoint, id], index]) => id)
               const artists = await client[method](ids)
               artists.forEach((artist, i) => {
-                const [key, index] = chunk[i]
+                const index = chunk[i][1]
                 results[index] = artist
               })
             })
