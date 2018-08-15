@@ -10,12 +10,17 @@
   * [Objects](#objects)
     * [Artist](#artist)
     * [Recording](#recording)
+    * [Release](#release)
+    * [SpotifyAlbum](#spotifyalbum)
     * [SpotifyArtist](#spotifyartist)
+    * [SpotifyCopyright](#spotifycopyright)
+    * [SpotifyExternalID](#spotifyexternalid)
+    * [SpotifyExternalURL](#spotifyexternalurl)
     * [SpotifyImage](#spotifyimage)
     * [SpotifyTrack](#spotifytrack)
     * [SpotifyTrackFeatures](#spotifytrackfeatures)
-    * [SpotifyURL](#spotifyurl)
   * [Enums](#enums)
+    * [SpotifyCopyrightType](#spotifycopyrighttype)
     * [SpotifyTrackMode](#spotifytrackmode)
 
 </details>
@@ -76,6 +81,123 @@ The recording’s entry on Spotify.
 </tbody>
 </table>
 
+#### Release
+
+:small_blue_diamond: *This type has been extended.
+See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>spotify</strong></td>
+<td valign="top"><a href="#spotifyalbum">SpotifyAlbum</a></td>
+<td>
+
+The release’s entry on Spotify.
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### SpotifyAlbum
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>albumID</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#id">ID</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>uri</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>href</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#urlstring">URLString</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>name</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>albumType</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#releasegrouptype">ReleaseGroupType</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>artists</strong></td>
+<td valign="top">[<a href="#spotifyartist">SpotifyArtist</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>availableMarkets</strong></td>
+<td valign="top">[<a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>copyrights</strong></td>
+<td valign="top">[<a href="#spotifycopyright">SpotifyCopyright</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>externalIDs</strong></td>
+<td valign="top">[<a href="#spotifyexternalid">SpotifyExternalID</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>externalURLs</strong></td>
+<td valign="top">[<a href="#spotifyexternalurl">SpotifyExternalURL</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>genres</strong></td>
+<td valign="top">[<a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>images</strong></td>
+<td valign="top">[<a href="#spotifyimage">SpotifyImage</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>label</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>popularity</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#int">Int</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>releaseDate</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#date">Date</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
 #### SpotifyArtist
 
 <table>
@@ -110,7 +232,7 @@ The recording’s entry on Spotify.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>externalURLs</strong></td>
-<td valign="top">[<a href="#spotifyurl">SpotifyURL</a>!]!</td>
+<td valign="top">[<a href="#spotifyexternalurl">SpotifyExternalURL</a>!]!</td>
 <td></td>
 </tr>
 <tr>
@@ -136,6 +258,81 @@ The recording’s entry on Spotify.
 <tr>
 <td colspan="2" valign="top"><strong>relatedArtists</strong></td>
 <td valign="top">[<a href="#spotifyartist">SpotifyArtist</a>!]!</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+#### SpotifyCopyright
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>text</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>type</strong></td>
+<td valign="top"><a href="#spotifycopyrighttype">SpotifyCopyrightType</a>!</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+#### SpotifyExternalID
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>type</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>externalID</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+#### SpotifyExternalURL
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>type</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>url</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#urlstring">URLString</a>!</td>
 <td></td>
 </tr>
 </tbody>
@@ -189,8 +386,78 @@ The recording’s entry on Spotify.
 <td></td>
 </tr>
 <tr>
+<td colspan="2" valign="top"><strong>uri</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>href</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#urlstring">URLString</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>title</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
+<td></td>
+</tr>
+<tr>
 <td colspan="2" valign="top"><strong>features</strong></td>
 <td valign="top"><a href="#spotifytrackfeatures">SpotifyTrackFeatures</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>album</strong></td>
+<td valign="top"><a href="#spotifyalbum">SpotifyAlbum</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>artists</strong></td>
+<td valign="top">[<a href="#spotifyartist">SpotifyArtist</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>availableMarkets</strong></td>
+<td valign="top">[<a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>discNumber</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#int">Int</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>duration</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#duration">Duration</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>explicit</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#boolean">Boolean</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>externalIDs</strong></td>
+<td valign="top">[<a href="#spotifyexternalid">SpotifyExternalID</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>externalURLs</strong></td>
+<td valign="top">[<a href="#spotifyexternalurl">SpotifyExternalURL</a>!]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>popularity</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#int">Int</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>previewURL</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#urlstring">URLString</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>trackNumber</strong></td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#int">Int</a>!</td>
 <td></td>
 </tr>
 </tbody>
@@ -281,32 +548,36 @@ The recording’s entry on Spotify.
 </tbody>
 </table>
 
-#### SpotifyURL
+### Enums
+
+#### SpotifyCopyrightType
+
+The type of copyright.
 
 <table>
 <thead>
-<tr>
-<th align="left">Field</th>
-<th align="right">Argument</th>
-<th align="left">Type</th>
+<th align="left">Value</th>
 <th align="left">Description</th>
-</tr>
 </thead>
 <tbody>
 <tr>
-<td colspan="2" valign="top"><strong>type</strong></td>
-<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
-<td></td>
+<td valign="top"><strong>COPYRIGHT</strong></td>
+<td>
+
+The copyright.
+
+</td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>url</strong></td>
-<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#urlstring">URLString</a>!</td>
-<td></td>
+<td valign="top"><strong>PERFORMANCE</strong></td>
+<td>
+
+The sound recording (performance) copyright.
+
+</td>
 </tr>
 </tbody>
 </table>
-
-### Enums
 
 #### SpotifyTrackMode
 
@@ -318,11 +589,19 @@ The recording’s entry on Spotify.
 <tbody>
 <tr>
 <td valign="top"><strong>MAJOR</strong></td>
-<td></td>
+<td>
+
+The major scale.
+
+</td>
 </tr>
 <tr>
 <td valign="top"><strong>MINOR</strong></td>
-<td></td>
+<td>
+
+The minor scale.
+
+</td>
 </tr>
 </tbody>
 </table>

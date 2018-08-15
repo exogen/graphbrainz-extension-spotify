@@ -1,18 +1,18 @@
 const gql = require('graphbrainz/lib/tag').default
 
 module.exports = gql`
-  extend type Query {
-    """
-
-    """
-    spotify: SpotifyQuery!
-  }
-
   extend type Artist {
     """
     The artist’s entry on Spotify.
     """
     spotify: SpotifyArtist
+  }
+
+  extend type Release {
+    """
+    The release’s entry on Spotify.
+    """
+    spotify: SpotifyAlbum
   }
 
   extend type Recording {
@@ -327,15 +327,15 @@ module.exports = gql`
   }
 
   """
-
+  The type of copyright.
   """
   enum SpotifyCopyrightType {
     """
-
+    The copyright.
     """
     COPYRIGHT
     """
-
+    The sound recording (performance) copyright.
     """
     PERFORMANCE
   }
@@ -345,11 +345,11 @@ module.exports = gql`
   """
   enum SpotifyTrackMode {
     """
-
+    The major scale.
     """
     MAJOR
     """
-
+    The minor scale.
     """
     MINOR
   }

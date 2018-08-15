@@ -18,14 +18,6 @@ export default function createLoader(options) {
   cache.delete = cache.del
   cache.clear = cache.reset
 
-  const catchNotFound = err => {
-    if (err.statusCode === 404) {
-      return null
-    }
-    debug(`Error: ${err}`)
-    throw err
-  }
-
   const loader = new DataLoader(
     keys => {
       return Promise.all(
@@ -33,10 +25,7 @@ export default function createLoader(options) {
           const [endpoint, id] = key
           switch (endpoint) {
             case 'artist':
-              return client
-                .artists([id])
-                .then(map => map.get(id))
-                .catch(catchNotFound)
+              return client.artists([id]).then(map => map.get(id))
             case 'related-artists':
               return client.relatedArtists(id)
             default:
