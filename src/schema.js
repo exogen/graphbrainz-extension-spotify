@@ -87,7 +87,7 @@ module.exports = gql`
     """
 
     """
-    name: String
+    title: String
     """
 
     """
@@ -233,7 +233,9 @@ module.exports = gql`
     """
     key: Int!
     """
-
+    The \`key\` translated from an integer to a name like “C”. (Only one name
+    will be returned, so enharmonic notes like like C♯/D♭ will just return
+    “C♯”.)
     """
     keyName: String!
     """
@@ -323,7 +325,7 @@ module.exports = gql`
     """
 
     """
-    externalID: String!
+    id: String!
   }
 
   """

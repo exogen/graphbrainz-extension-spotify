@@ -71,7 +71,17 @@ export default class SpotifyClient extends Client {
 
   async artists(ids) {
     const body = await this.get('artists', { qs: { ids: ids.join(',') } })
-    return new Map(ids.map((id, i) => [id, body.artists[i]]))
+    return body.artists
+  }
+
+  async albums(ids) {
+    const body = await this.get('albums', { qs: { ids: ids.join(',') } })
+    return body.albums
+  }
+
+  async tracks(ids) {
+    const body = await this.get('tracks', { qs: { ids: ids.join(',') } })
+    return body.tracks
   }
 
   async relatedArtists(id) {

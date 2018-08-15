@@ -2,6 +2,7 @@ import qs from 'qs'
 import DataLoader from 'dataloader'
 import LRUCache from 'lru-cache'
 import createLogger from 'debug'
+import chunkArray from 'lodash.chunk'
 
 const debug = createLogger('graphbrainz-extension-spotify:loader')
 
@@ -19,20 +20,54 @@ export default function createLoader(options) {
   cache.clear = cache.reset
 
   const loader = new DataLoader(
-    keys => {
-      return Promise.all(
-        keys.map(key => {
-          const [endpoint, id] = key
+    async keys => {
+      const entities = {
+        artist: [],
+        album: [],
+        track: []
+      }
+      const otherRequests = []
+      keys.forEach((key, i) => {
+        const [endpoint, id] = key
+        if (entities[endpoint]) {
+          entities[endpoint].push([key, i])
+        } else {
+          otherRequests.push([key, i])
+        }
+      })
+      const chunks = {
+        artists: chunkArray(entities.artist, 50),
+        albums: chunkArray(entities.album, 50),
+        tracks: chunkArray(entities.track, 50)
+      }
+      const results = []
+      const promises = [].concat(
+        ...Object.keys(chunks).map(method =>
+          Promise.all(
+            chunks[method].map(async chunk => {
+              const ids = chunk.map(([[endpoint, id], index]) => id)
+              const artists = await client[method](ids)
+              artists.forEach((artist, i) => {
+                const [key, index] = chunk[i]
+                results[index] = artist
+              })
+            })
+          )
+        ),
+        ...otherRequests.map(([key, index]) => {
+          const [endpoint, id, params] = key
           switch (endpoint) {
-            case 'artist':
-              return client.artists([id]).then(map => map.get(id))
             case 'related-artists':
-              return client.relatedArtists(id)
+              return client.relatedArtists(id).then(artists => {
+                results[index] = artists
+              })
             default:
               throw new Error(`Unsupported endpoint: ${endpoint}`)
           }
         })
       )
+      await Promise.all(promises)
+      return results
     },
     {
       cacheKeyFn: ([endpoint, id, params = {}]) => {

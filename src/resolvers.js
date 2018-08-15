@@ -52,21 +52,57 @@ function createSpotifyResolver(spotifyType) {
   }
 }
 
+function resolveExternalURLs(entity) {
+  return Object.keys(entity.external_urls).map(key => ({
+    type: key,
+    url: entity.external_urls[key]
+  }))
+}
+
+function resolveExternalIDs(entity) {
+  return Object.keys(entity.external_ids).map(key => ({
+    type: key,
+    id: entity.external_ids[key]
+  }))
+}
+
 module.exports = {
   Artist: {
     spotify: createSpotifyResolver('artist')
   },
+  Release: {
+    spotify: createSpotifyResolver('album')
+  },
+  Recording: {
+    spotify: createSpotifyResolver('track')
+  },
   SpotifyArtist: {
     artistID: artist => artist.id,
-    externalURLs: artist => {
-      return Object.keys(artist.external_urls).map(key => ({
-        type: key,
-        url: artist.external_urls[key]
-      }))
-    },
+    externalURLs: resolveExternalURLs,
     relatedArtists: (artist, args, context) => {
       return context.loaders.spotify.load(['related-artists', artist.id])
+    },
+    topTracks: (artist, args, context) => {
+      return context.loaders.spotify.load(['top-tracks', artist.id])
     }
   },
-  SpotifyExternalURL: {}
+  SpotifyAlbum: {
+    albumID: album => album.id,
+    title: album => album.name,
+    albumType: album => album.album_type,
+    externalIDs: resolveExternalIDs,
+    externalURLs: resolveExternalURLs,
+    availableMarkets: album => album.available_markets,
+    releaseDate: album => album.release_date
+  },
+  SpotifyTrack: {
+    trackID: track => track.id,
+    title: track => track.name,
+    availableMarkets: track => track.available_markets,
+    externalIDs: resolveExternalIDs,
+    externalURLs: resolveExternalURLs,
+    discNumber: track => track.disc_number,
+    previewURL: track => track.preview_url,
+    trackNumber: track => track.track_number
+  }
 }
