@@ -98,21 +98,21 @@ Get the audio features and related artists for a track ([try it](<https://graphb
 <details>
   <summary><strong>Table of Contents</strong></summary>
 
-- [Objects](#objects)
-  - [Artist](#artist)
-  - [Recording](#recording)
-  - [Release](#release)
-  - [SpotifyAlbum](#spotifyalbum)
-  - [SpotifyArtist](#spotifyartist)
-  - [SpotifyAudioFeatures](#spotifyaudiofeatures)
-  - [SpotifyCopyright](#spotifycopyright)
-  - [SpotifyExternalID](#spotifyexternalid)
-  - [SpotifyExternalURL](#spotifyexternalurl)
-  - [SpotifyImage](#spotifyimage)
-  - [SpotifyTrack](#spotifytrack)
-- [Enums](#enums)
-  - [SpotifyCopyrightType](#spotifycopyrighttype)
-  - [SpotifyTrackMode](#spotifytrackmode)
+  * [Objects](#objects)
+    * [Artist](#artist)
+    * [Recording](#recording)
+    * [Release](#release)
+    * [SpotifyAlbum](#spotifyalbum)
+    * [SpotifyArtist](#spotifyartist)
+    * [SpotifyAudioFeatures](#spotifyaudiofeatures)
+    * [SpotifyCopyright](#spotifycopyright)
+    * [SpotifyExternalID](#spotifyexternalid)
+    * [SpotifyExternalURL](#spotifyexternalurl)
+    * [SpotifyImage](#spotifyimage)
+    * [SpotifyTrack](#spotifytrack)
+  * [Enums](#enums)
+    * [SpotifyCopyrightType](#spotifycopyrighttype)
+    * [SpotifyTrackMode](#spotifytrackmode)
 
 </details>
 
@@ -120,7 +120,7 @@ Get the audio features and related artists for a track ([try it](<https://graphb
 
 #### Artist
 
-:small*blue_diamond: \_This type has been extended.
+:small_blue_diamond: *This type has been extended.
 See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
 
 <table>
@@ -147,7 +147,7 @@ The artist’s entry on Spotify.
 
 #### Recording
 
-:small*blue_diamond: \_This type has been extended.
+:small_blue_diamond: *This type has been extended.
 See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
 
 <table>
@@ -174,7 +174,7 @@ The recording’s entry on Spotify.
 
 #### Release
 
-:small*blue_diamond: \_This type has been extended.
+:small_blue_diamond: *This type has been extended.
 See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
 
 <table>
