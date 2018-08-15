@@ -439,11 +439,12 @@ module.exports = gql`
   """
   type SpotifyExternalURL {
     """
-
+    The type of the URL, for example “spotify”.
     """
     type: String!
-    """
 
+    """
+    An external, public URL to the object.
     """
     url: URLString!
   }

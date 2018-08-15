@@ -1,5 +1,95 @@
 # GraphBrainz Extension: Spotify
 
+[![npm version](https://img.shields.io/npm/v/graphbrainz-extension-spotify.svg)](https://www.npmjs.com/package/graphbrainz-extension-spotify)
+[![license](https://img.shields.io/npm/l/graphbrainz-extension-spotify.svg)](https://github.com/exogen/graphbrainz-extension-spotify/blob/master/LICENSE)
+
+Retrieve information about MusicBrainz entities from [Spotify](https://www.spotify.com/)
+using the [Spotify Web API](https://developer.spotify.com/documentation/web-api/).
+This project has no affiliation with Spotify.
+
+The extension works by finding Spotify URLs in an entity’s URL relationships.
+The URL relationship must have the `streaming music` type and point to a Spotify
+entity of the appropriate type: `artist` for artists, `album` for releases, and
+`track` for recordings.
+
+**[Try out the live demo!][demo]** :bulb: Use the “Docs” sidebar or the
+documentation below to help construct your query.
+
+## Installation
+
+To use this extension, install [GraphBrainz](https://github.com/exogen/graphbrainz),
+then:
+
+```console
+$ npm install graphbrainz-extension-spotify
+$ GRAPHBRAINZ_EXTENSIONS='["graphbrainz-extension-spotify"]' graphbrainz
+```
+
+Or, if you are using the middleware directly:
+
+```js
+import graphbrainz from 'graphbrainz'
+
+const middleware = graphbrainz({
+  // Don't forget to add the other extensions you use, too.
+  extensions: ['graphbrainz-extension-spotify']
+})
+```
+
+## Configuration
+
+This extension can be configured using environment variables:
+
+- **`SPOTIFY_CLIENT_ID`**: The Spotify client ID to use. This is required.
+- **`SPOTIFY_CLIENT_SECRET`**: The Spotify client secret to use. This is
+  required.
+- **`SPOTIFY_BASE_URL`**: The base URL at which to access the Spotify API.
+  Defaults to `https://api.spotify.com/v1/`.
+- **`SPOTIFY_CACHE_SIZE`**: The number of items to keep in the cache. Defaults to
+  `GRAPHBRAINZ_CACHE_SIZE` if defined, or `8192`.
+- **`SPOTIFY_CACHE_TTL`**: The number of seconds to keep items in the cache.
+  Defaults to `GRAPHBRAINZ_CACHE_TTL` if defined, or `86400000` (one day).
+
+This extension uses its own cache, separate from the MusicBrainz loader cache.
+
+## Example Queries
+
+Get the audio features and related artists for a track ([try it](<https://graphbrainz-extension-spotify.herokuapp.com/?query=%7B%0A%20%20lookup%20%7B%0A%20%20%20%20recording(mbid%3A%20%226c128cd9-94da-44fe-b74f-b68079fb1606%22)%20%7B%0A%20%20%20%20%20%20spotify%20%7B%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20audioFeatures%20%7B%0A%20%20%20%20%20%20%20%20%20%20acousticness%0A%20%20%20%20%20%20%20%20%20%20danceability%0A%20%20%20%20%20%20%20%20%20%20duration%0A%20%20%20%20%20%20%20%20%20%20energy%0A%20%20%20%20%20%20%20%20%20%20instrumentalness%0A%20%20%20%20%20%20%20%20%20%20keyName%0A%20%20%20%20%20%20%20%20%20%20liveness%0A%20%20%20%20%20%20%20%20%20%20loudness%0A%20%20%20%20%20%20%20%20%20%20mode%0A%20%20%20%20%20%20%20%20%20%20speechiness%0A%20%20%20%20%20%20%20%20%20%20tempo%0A%20%20%20%20%20%20%20%20%20%20timeSignature%0A%20%20%20%20%20%20%20%20%20%20valence%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20artists%20%7B%0A%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20relatedArtists%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%20%20href%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%0A>)):
+
+```graphql
+{
+  lookup {
+    recording(mbid: "6c128cd9-94da-44fe-b74f-b68079fb1606") {
+      spotify {
+        title
+        audioFeatures {
+          acousticness
+          danceability
+          duration
+          energy
+          instrumentalness
+          keyName
+          liveness
+          loudness
+          mode
+          speechiness
+          tempo
+          timeSignature
+          valence
+        }
+        artists {
+          name
+          relatedArtists {
+            name
+            href
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 <!-- START graphql-markdown -->
 
 ## Schema Types
@@ -663,12 +753,20 @@ A URL for linking to an entity with some third party.
 <tr>
 <td colspan="2" valign="top"><strong>type</strong></td>
 <td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#string">String</a>!</td>
-<td></td>
+<td>
+
+The type of the URL, for example “spotify”.
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>url</strong></td>
 <td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#urlstring">URLString</a>!</td>
-<td></td>
+<td>
+
+An external, public URL to the object.
+
+</td>
 </tr>
 </tbody>
 </table>
