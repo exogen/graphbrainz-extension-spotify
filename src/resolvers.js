@@ -66,6 +66,12 @@ function resolveExternalIDs(entity) {
   }))
 }
 
+const albumTypes = {
+  album: 'Album',
+  single: 'Single',
+  compilation: 'Compilation'
+}
+
 module.exports = {
   Artist: {
     spotify: createSpotifyResolver('artist')
@@ -89,7 +95,7 @@ module.exports = {
   SpotifyAlbum: {
     albumID: album => album.id,
     title: album => album.name,
-    albumType: album => album.album_type,
+    albumType: album => albumTypes[album.album_type] || null,
     externalIDs: resolveExternalIDs,
     externalURLs: resolveExternalURLs,
     availableMarkets: album => album.available_markets,
