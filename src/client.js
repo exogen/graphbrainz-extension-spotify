@@ -88,4 +88,9 @@ export default class SpotifyClient extends Client {
     const body = await this.get(`artists/${id}/related-artists`)
     return body.artists
   }
+
+  async audioFeatures(id) {
+    const body = await this.get(`audio-features/${id}`)
+    return body
+  }
 }

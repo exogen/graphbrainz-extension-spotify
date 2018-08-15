@@ -56,11 +56,14 @@ export default function createLoader(options) {
         ),
         ...otherRequests.map(([key, index]) => {
           const [endpoint, id, params] = key
+          const setResult = result => {
+            results[index] = result
+          }
           switch (endpoint) {
             case 'related-artists':
-              return client.relatedArtists(id).then(artists => {
-                results[index] = artists
-              })
+              return client.relatedArtists(id).then(setResult)
+            case 'audio-features':
+              return client.audioFeatures(id).then(setResult)
             default:
               throw new Error(`Unsupported endpoint: ${endpoint}`)
           }

@@ -72,6 +72,21 @@ const albumTypes = {
   compilation: 'Compilation'
 }
 
+const keyNames = [
+  'C',
+  'C♯',
+  'D',
+  'D♯',
+  'E',
+  'F',
+  'F♯',
+  'G',
+  'G♯',
+  'A',
+  'A♯',
+  'B'
+]
+
 module.exports = {
   Artist: {
     spotify: createSpotifyResolver('artist')
@@ -107,8 +122,25 @@ module.exports = {
     availableMarkets: track => track.available_markets,
     externalIDs: resolveExternalIDs,
     externalURLs: resolveExternalURLs,
+    duration: track => track.duration_ms,
     discNumber: track => track.disc_number,
     previewURL: track => track.preview_url,
-    trackNumber: track => track.track_number
+    trackNumber: track => track.track_number,
+    audioFeatures: (track, args, context) => {
+      return context.loaders.spotify.load(['audio-features', track.id])
+    }
+  },
+  SpotifyAudioFeatures: {
+    duration: audioFeatures => audioFeatures.duration_ms,
+    keyName: audioFeatures => keyNames[audioFeatures.key] || null,
+    timeSignature: audioFeatures => audioFeatures.time_signature
+  },
+  SpotifyTrackMode: {
+    MAJOR: 1,
+    MINOR: 0
+  },
+  SpotifyCopyrightType: {
+    COPYRIGHT: 'C',
+    PERFORMANCE: 'P'
   }
 }

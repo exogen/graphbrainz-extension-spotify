@@ -157,7 +157,7 @@ module.exports = gql`
     """
 
     """
-    features: SpotifyTrackFeatures
+    audioFeatures: SpotifyAudioFeatures
     """
 
     """
@@ -207,7 +207,7 @@ module.exports = gql`
   """
 
   """
-  type SpotifyTrackFeatures {
+  type SpotifyAudioFeatures {
     """
 
     """
