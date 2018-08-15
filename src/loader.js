@@ -70,6 +70,8 @@ export default function createLoader(options) {
               return client.relatedArtists(id).then(setResult)
             case 'audio-features':
               return client.audioFeatures(id).then(setResult)
+            case 'top-tracks':
+              return client.topTracks(id, params).then(setResult)
             default:
               throw new Error(`Unsupported endpoint: ${endpoint}`)
           }

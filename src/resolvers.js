@@ -104,12 +104,18 @@ module.exports = {
       return context.loaders.spotify.load(['related-artists', artist.id])
     },
     topTracks: (artist, args, context) => {
-      return context.loaders.spotify.load(['top-tracks', artist.id])
+      return context.loaders.spotify.load([
+        'top-tracks',
+        artist.id,
+        {
+          market: args.market
+        }
+      ])
     }
   },
   SpotifyAlbum: {
     albumID: album => album.id,
-    title: album => album.name,
+    title: album => album.name || null,
     albumType: album => albumTypes[album.album_type] || null,
     externalIDs: resolveExternalIDs,
     externalURLs: resolveExternalURLs,
