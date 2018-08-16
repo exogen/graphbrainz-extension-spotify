@@ -1,5 +1,6 @@
 import URL from 'url'
 import createLogger from 'debug'
+import maxBy from 'lodash.maxby'
 
 const debug = createLogger('graphbrainz-extension-spotify:resolvers')
 
@@ -60,7 +61,7 @@ function resolveExternalURLs(entity) {
 }
 
 function resolveExternalIDs(entity) {
-  return Object.keys(entity.external_ids).map(key => ({
+  return Object.keys(entity.external_ids || {}).map(key => ({
     type: key,
     id: entity.external_ids[key]
   }))
@@ -92,10 +93,79 @@ module.exports = {
     spotify: createSpotifyResolver('artist')
   },
   Release: {
-    spotify: createSpotifyResolver('album')
+    spotify: async (release, args, context, ...rest) => {
+      for (const strategy of args.strategy) {
+        switch (strategy) {
+          case 'URL': {
+            const album = await createSpotifyResolver('album')(
+              release,
+              args,
+              context,
+              ...rest
+            )
+            if (album) {
+              return album
+            }
+            break
+          }
+          case 'EXTERNALID': {
+            if (release.barcode) {
+              const albums = await context.loaders.spotify.load([
+                'search',
+                'albums',
+                {
+                  q: `upc:${release.barcode}`
+                }
+              ])
+              return maxBy(albums, albums => albums.popularity || 0) || null
+            }
+            break
+          }
+        }
+      }
+      return null
+    }
   },
   Recording: {
-    spotify: createSpotifyResolver('track')
+    spotify: async (recording, args, context, ...rest) => {
+      for (const strategy of args.strategy) {
+        switch (strategy) {
+          case 'URL': {
+            const track = await createSpotifyResolver('track')(
+              recording,
+              args,
+              context,
+              ...rest
+            )
+            if (track) {
+              return track
+            }
+            break
+          }
+          case 'EXTERNALID': {
+            if (!recording.isrcs) {
+              recording = await context.loaders.lookup.load([
+                'recording',
+                recording.id,
+                { inc: 'isrcs' }
+              ])
+            }
+            if (recording.isrcs.length) {
+              const tracks = await context.loaders.spotify.load([
+                'search',
+                'tracks',
+                {
+                  q: recording.isrcs.map(isrc => `isrc:${isrc}`).join(' OR ')
+                }
+              ])
+              return maxBy(tracks, track => track.popularity || 0) || null
+            }
+            break
+          }
+        }
+      }
+      return null
+    }
   },
   SpotifyArtist: {
     artistID: artist => artist.id,
@@ -119,6 +189,14 @@ module.exports = {
     albumType: album => albumTypes[album.album_type] || null,
     externalIDs: resolveExternalIDs,
     externalURLs: resolveExternalURLs,
+    genres: (album, args, context) => {
+      if (album.genres) {
+        return album.genres
+      }
+      return context.loaders.spotify
+        .load(['album', album.id])
+        .then(album => album.genres)
+    },
     availableMarkets: album => album.available_markets,
     releaseDate: album => album.release_date
   },

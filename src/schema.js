@@ -12,14 +12,26 @@ module.exports = gql`
     """
     The release’s entry on Spotify.
     """
-    spotify: SpotifyAlbum
+    spotify(
+      """
+      The strategies to use to match the release with a Spotify album, in
+      preferential order.
+      """
+      strategy: [SpotifyMatchStrategy!] = [URL, EXTERNALID]
+    ): SpotifyAlbum
   }
 
   extend type Recording {
     """
     The recording’s entry on Spotify.
     """
-    spotify: SpotifyTrack
+    spotify(
+      """
+      The strategies to use to match the recording with a Spotify track, in
+      preferential order.
+      """
+      strategy: [SpotifyMatchStrategy!] = [URL, EXTERNALID]
+    ): SpotifyTrack
   }
 
   """
@@ -490,5 +502,24 @@ module.exports = gql`
     The minor scale.
     """
     MINOR
+  }
+
+  """
+  Strategies for matching MusicBrainz entities to Spotify entities.
+  """
+  enum SpotifyMatchStrategy {
+    """
+    The entity will be matched by finding an explicit URL relationship that
+    links to Spotify.
+    """
+    URL
+
+    """
+    The entity will be matched by searching for Spotify entities by some
+    external ID that is known to both MusicBrainz and Spotify, like an ISRC
+    or UPC barcode. Since this can result in multiple Spotify matches, the most
+    popular will be preferred (if possible), or the first.
+    """
+    EXTERNALID
   }
 `

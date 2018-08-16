@@ -98,4 +98,13 @@ export default class SpotifyClient extends Client {
     const body = await this.get(`audio-features/${id}`)
     return body
   }
+
+  async search(type, params) {
+    params = {
+      ...params,
+      type: { artists: 'artist', albums: 'album', tracks: 'track' }[type]
+    }
+    const body = await this.get('search', { qs: params })
+    return body[type].items
+  }
 }
