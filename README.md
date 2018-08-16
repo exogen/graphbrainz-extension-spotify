@@ -112,6 +112,7 @@ Get the audio features and related artists for a track ([try it](<https://graphb
     * [SpotifyTrack](#spotifytrack)
   * [Enums](#enums)
     * [SpotifyCopyrightType](#spotifycopyrighttype)
+    * [SpotifyMatchStrategy](#spotifymatchstrategy)
     * [SpotifyTrackMode](#spotifytrackmode)
 
 </details>
@@ -169,6 +170,16 @@ The recording’s entry on Spotify.
 
 </td>
 </tr>
+<tr>
+<td colspan="2" align="right" valign="top">strategy</td>
+<td valign="top">[<a href="#spotifymatchstrategy">SpotifyMatchStrategy</a>!]</td>
+<td>
+
+The strategies to use to match the recording with a Spotify track, in
+preferential order.
+
+</td>
+</tr>
 </tbody>
 </table>
 
@@ -193,6 +204,16 @@ See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a
 <td>
 
 The release’s entry on Spotify.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">strategy</td>
+<td valign="top">[<a href="#spotifymatchstrategy">SpotifyMatchStrategy</a>!]</td>
+<td>
+
+The strategies to use to match the release with a Spotify album, in
+preferential order.
 
 </td>
 </tr>
@@ -1022,6 +1043,39 @@ The copyright.
 <td>
 
 The sound recording (performance) copyright.
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### SpotifyMatchStrategy
+
+Strategies for matching MusicBrainz entities to Spotify entities.
+
+<table>
+<thead>
+<th align="left">Value</th>
+<th align="left">Description</th>
+</thead>
+<tbody>
+<tr>
+<td valign="top"><strong>URL</strong></td>
+<td>
+
+The entity will be matched by finding an explicit URL relationship that
+links to Spotify.
+
+</td>
+</tr>
+<tr>
+<td valign="top"><strong>EXTERNALID</strong></td>
+<td>
+
+The entity will be matched by searching for Spotify entities by some
+external ID that is known to both MusicBrainz and Spotify, like an ISRC
+or UPC barcode. Since this can result in multiple Spotify matches, the most
+popular will be preferred (if possible), or the first.
 
 </td>
 </tr>

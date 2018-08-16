@@ -2600,9 +2600,9 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
-graphbrainz@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/graphbrainz/-/graphbrainz-8.0.2.tgz#67edd3fca69021fdcbcb928715301e5a54faf18c"
+graphbrainz@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/graphbrainz/-/graphbrainz-8.0.3.tgz#2dfde837c050e2425a36d31bd1526223e5f46512"
   dependencies:
     babel-runtime "^6.25.0"
     compression "^1.7.3"
@@ -3583,6 +3583,10 @@ lodash.flattendeep@^4.4.0:
 lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+
+lodash.maxby@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.maxby/-/lodash.maxby-4.6.0.tgz#082240068f3c7a227aa00a8380e4f38cf0786e3d"
 
 lodash.merge@^4.6.0:
   version "4.6.1"
