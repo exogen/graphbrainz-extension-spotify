@@ -1,6 +1,10 @@
 const gql = require('graphbrainz/lib/tag').default
 
 module.exports = gql`
+  extend type Query {
+    spotify: SpotifyQuery!
+  }
+
   extend type Artist {
     """
     The artist’s entry on Spotify.
@@ -32,6 +36,48 @@ module.exports = gql`
       """
       strategy: [SpotifyMatchStrategy!] = [URL, EXTERNALID]
     ): SpotifyTrack
+  }
+
+  type SpotifyQuery {
+    """
+    Track recommendations based on seed entities and various parameters.
+    """
+    recommendations(
+      """
+      A list of [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids)
+      for seed artists. Up to 5 seed values may be provided in any combination
+      of \`seedArtists\`, \`seedTracks\`, and \`seedGenres\`.
+      """
+      seedArtists: [ID!] = []
+
+      """
+      A comma separated list of any genres in the set of [available genre seeds](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#available-genre-seeds).
+      Up to 5 seed values may be provided in any combination of \`seedArtists\`,
+      \`seedTracks\`, and \`seedGenres\`.
+      """
+      seedGenres: [ID!] = []
+
+      """
+      A list of [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids)
+      for seed tracks. Up to 5 seed values may be provided in any combination
+      of \`seedArtists\`, \`seedTracks\`, and \`seedGenres\`.
+      """
+      seedTracks: [ID!] = []
+
+      """
+      The target size of the list of recommended tracks. For seeds with
+      unusually small pools or when highly restrictive filtering is applied, it
+      may be impossible to generate the requested number of recommended tracks.
+      Debugging information for such cases is available in the response.
+
+      Default: 20. Minimum: 1. Maximum: 100.
+      """
+      limit: Int
+    ): SpotifyRecommendations!
+  }
+
+  type SpotifyRecommendations {
+    tracks: [SpotifyTrack!]!
   }
 
   """
@@ -294,6 +340,17 @@ module.exports = gql`
     the number on the specified disc.
     """
     trackNumber: Int!
+
+    """
+    A MusicBrainz recording that corresponds to the track.
+    """
+    musicBrainz(
+      """
+      The strategies to use to match the track with a MusicBrainz recording, in
+      preferential order.
+      """
+      strategy: [SpotifyMatchStrategy!] = [URL, EXTERNALID]
+    ): Recording
   }
 
   """

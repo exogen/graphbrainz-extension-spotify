@@ -100,6 +100,7 @@ Get the audio features and related artists for a track ([try it](<https://graphb
 
   * [Objects](#objects)
     * [Artist](#artist)
+    * [Query](#query)
     * [Recording](#recording)
     * [Release](#release)
     * [SpotifyAlbum](#spotifyalbum)
@@ -109,6 +110,8 @@ Get the audio features and related artists for a track ([try it](<https://graphb
     * [SpotifyExternalID](#spotifyexternalid)
     * [SpotifyExternalURL](#spotifyexternalurl)
     * [SpotifyImage](#spotifyimage)
+    * [SpotifyQuery](#spotifyquery)
+    * [SpotifyRecommendations](#spotifyrecommendations)
     * [SpotifyTrack](#spotifytrack)
   * [Enums](#enums)
     * [SpotifyCopyrightType](#spotifycopyrighttype)
@@ -142,6 +145,29 @@ See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a
 The artist’s entry on Spotify.
 
 </td>
+</tr>
+</tbody>
+</table>
+
+#### Query
+
+:small_blue_diamond: *This type has been extended.
+See the [base schema](https://github.com/exogen/graphbrainz/docs/types.md) for a description and additional fields.*
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>spotify</strong></td>
+<td valign="top"><a href="#spotifyquery">SpotifyQuery</a>!</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -837,6 +863,97 @@ The image height in pixels, if known.
 </tbody>
 </table>
 
+#### SpotifyQuery
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>recommendations</strong></td>
+<td valign="top"><a href="#spotifyrecommendations">SpotifyRecommendations</a>!</td>
+<td>
+
+Track recommendations based on seed entities and various parameters.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">seedArtists</td>
+<td valign="top">[<a href="https://github.com/exogen/graphbrainz/docs/types.md#id">ID</a>!]</td>
+<td>
+
+A list of [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids)
+for seed artists. Up to 5 seed values may be provided in any combination
+of `seedArtists`, `seedTracks`, and `seedGenres`.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">seedGenres</td>
+<td valign="top">[<a href="https://github.com/exogen/graphbrainz/docs/types.md#id">ID</a>!]</td>
+<td>
+
+A comma separated list of any genres in the set of [available genre seeds](https://developer.spotify.com/documentation/web-api/reference/browse/get-recommendations/#available-genre-seeds).
+Up to 5 seed values may be provided in any combination of `seedArtists`,
+`seedTracks`, and `seedGenres`.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">seedTracks</td>
+<td valign="top">[<a href="https://github.com/exogen/graphbrainz/docs/types.md#id">ID</a>!]</td>
+<td>
+
+A list of [Spotify IDs](https://developer.spotify.com/documentation/web-api/#spotify-uris-and-ids)
+for seed tracks. Up to 5 seed values may be provided in any combination
+of `seedArtists`, `seedTracks`, and `seedGenres`.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">limit</td>
+<td valign="top"><a href="https://github.com/exogen/graphbrainz/docs/types.md#int">Int</a></td>
+<td>
+
+The target size of the list of recommended tracks. For seeds with
+unusually small pools or when highly restrictive filtering is applied, it
+may be impossible to generate the requested number of recommended tracks.
+Debugging information for such cases is available in the response.
+
+Default: 20. Minimum: 1. Maximum: 100.
+
+</td>
+</tr>
+</tbody>
+</table>
+
+#### SpotifyRecommendations
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>tracks</strong></td>
+<td valign="top">[<a href="#spotifytrack">SpotifyTrack</a>!]!</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
 #### SpotifyTrack
 
 A track from Spotify.
@@ -1012,6 +1129,25 @@ A link to a 30 second preview (MP3 format) of the track, if available.
 
 The number of the track. If an album has several discs, the track number is
 the number on the specified disc.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>musicBrainz</strong></td>
+<td valign="top"><a href="#recording">Recording</a></td>
+<td>
+
+A MusicBrainz recording that corresponds to the track.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">strategy</td>
+<td valign="top">[<a href="#spotifymatchstrategy">SpotifyMatchStrategy</a>!]</td>
+<td>
+
+The strategies to use to match the track with a MusicBrainz recording, in
+preferential order.
 
 </td>
 </tr>

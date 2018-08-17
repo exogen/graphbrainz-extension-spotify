@@ -107,4 +107,9 @@ export default class SpotifyClient extends Client {
     const body = await this.get('search', { qs: params })
     return body[type].items
   }
+
+  async recommendations(params) {
+    const body = await this.get('recommendations', { qs: params })
+    return body
+  }
 }

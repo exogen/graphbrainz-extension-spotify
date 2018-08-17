@@ -89,6 +89,23 @@ const keyNames = [
 ]
 
 module.exports = {
+  Query: {
+    spotify: root => ({})
+  },
+  SpotifyQuery: {
+    recommendations: (query, args, context) => {
+      return context.loaders.spotify.load([
+        'recommendations',
+        null,
+        {
+          seed_artists: args.seedArtists.join(','),
+          seed_genres: args.seedGenres.join(','),
+          seed_tracks: args.seedTracks.join(','),
+          limit: args.limit
+        }
+      ])
+    }
+  },
   Artist: {
     spotify: createSpotifyResolver('artist')
   },
@@ -212,6 +229,55 @@ module.exports = {
     trackNumber: track => track.track_number,
     audioFeatures: (track, args, context) => {
       return context.loaders.spotify.load(['audio-features', track.id])
+    },
+    musicBrainz: async (track, args, context) => {
+      const spotifyURL = track.external_urls.spotify
+      if (spotifyURL) {
+        let url
+        try {
+          url = await context.loaders.lookup.load([
+            'url',
+            null,
+            {
+              resource: spotifyURL,
+              inc: 'recording-rels'
+            }
+          ])
+        } catch (err) {
+          if (err.statusCode !== 404) {
+            throw err
+          }
+        }
+        if (url) {
+          const relation = url.relations.find(
+            relation =>
+              relation.type === 'streaming music' &&
+              relation['target-type'] === 'recording'
+          )
+          if (relation) {
+            return relation.recording
+          }
+        }
+      }
+      if (!track.external_ids) {
+        track = await context.loaders.spotify.load(['track', track.id])
+      }
+      if (track.external_ids.isrc) {
+        let isrc
+        try {
+          isrc = await context.loaders.lookup.load([
+            'isrc',
+            track.external_ids.isrc.toUpperCase()
+          ])
+        } catch (err) {
+          if (err.statusCode !== 404) {
+            throw err
+          }
+        }
+        if (isrc && isrc.recordings.length) {
+          return isrc.recordings[0]
+        }
+      }
     }
   },
   SpotifyAudioFeatures: {

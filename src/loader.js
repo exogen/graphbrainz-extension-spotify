@@ -74,6 +74,8 @@ export default function createLoader(options) {
               return client.topTracks(id, params).then(setResult)
             case 'search':
               return client.search(id, params).then(setResult)
+            case 'recommendations':
+              return client.recommendations(params).then(setResult)
             default:
               throw new Error(`Unsupported endpoint: ${endpoint}`)
           }
