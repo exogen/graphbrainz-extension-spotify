@@ -1,6 +1,6 @@
 {
   "name": "graphbrainz-extension-spotify",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Spotify GraphQL extension for GraphBrainz.",
   "keywords": [
     "graphbrainz",
