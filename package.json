@@ -44,7 +44,7 @@
     "test:record": "cross-env NOCK_MODE=record ava --concurrency 1 --update-snapshots"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{cjs,js}": [
       "eslint --fix"
     ]
   },
