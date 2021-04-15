@@ -1,9 +1,9 @@
 language: node_js
 
 node_js:
-- '8'
-- '9'
-- '10'
+- '12'
+- '14'
+- '15'
 
 sudo: false
 
@@ -21,5 +21,5 @@ script:
 - yarn test
 
 after_success:
-- "$(yarn bin)/nyc report --reporter=text-lcov | $(yarn bin)/coveralls"
+- "$(yarn bin)/c8 report --reporter=text-lcov | $(yarn bin)/coveralls"
 - bash <(curl -s https://codecov.io/bash)
