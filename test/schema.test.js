@@ -1,8 +1,8 @@
-import test from 'ava'
-import { setupTests } from 'ava-nock'
-import { testQuerySnapshot } from './_helpers'
+import test from 'ava';
+import { setupTests } from 'ava-nock';
+import { testQuerySnapshot } from './_helpers.js';
 
-setupTests()
+setupTests();
 
 test(
   'MusicBrainz recordings have a spotify track field',
@@ -40,4 +40,4 @@ test(
       }
     }
   `
-)
+);

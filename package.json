@@ -17,110 +17,88 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=8.10"
+    "node": ">=12.18.0"
   },
+  "type": "module",
   "main": "lib/index.js",
   "files": [
-    "lib",
-    "yarn.lock"
+    "src"
   ],
   "scripts": {
-    "build": "npm run build:lib && npm run build:docs",
-    "build:docs": "babel-node scripts/build-docs.js",
-    "build:lib": "babel --out-dir lib src",
-    "clean": "rimraf lib",
+    "build": "npm run build:docs",
+    "build:docs": "node scripts/build-docs.js",
     "deploy": "git push heroku master",
     "format": "npm run lint:fix",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "precommit": "lint-staged",
-    "prepare": "npm run clean && npm run build",
+    "prepare": "npm run build",
     "start": "node scripts/start.js",
-    "start:dev": "nodemon --exec babel-node scripts/start-dev.js",
+    "start:dev": "nodemon scripts/start.js",
     "test": "npm run lint && npm run test:coverage",
     "test:cache": "cross-env NOCK_MODE=cache ava --concurrency 1 --update-snapshots",
-    "test:coverage": "cross-env NODE_ENV=test nyc npm run test:only",
+    "test:coverage": "cross-env NODE_ENV=test c8 --all npm run test:only",
     "test:live": "cross-env NOCK_MODE=live ava --concurrency 1",
     "test:only": "ava",
     "test:preview": "cross-env NOCK_MODE=preview ava --concurrency 1",
     "test:record": "cross-env NOCK_MODE=record ava --concurrency 1 --update-snapshots"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
+    "*.{cjs,js}": [
+      "eslint --fix"
     ]
   },
   "ava": {
-    "babel": "inherit",
     "require": [
-      "dotenv/config",
-      "babel-register"
+      "dotenv/config"
     ],
     "files": [
       "src/**/*.test.js",
-      "test"
+      "test/**/*.test.js"
     ]
   },
   "ava-nock": {
-    "pathFilter": [
-      "([?&](key|secret)=)([^&]*)",
-      "$1*"
+    "headerFilter": {
+      "Authorization": [
+        "^(Bearer|Basic) .+$",
+        "$1 <token>"
+      ]
+    },
+    "responseBodyFilter": [
+      "(\"access_token\":\\s*)\"[^\"]+\"",
+      "$1\"<token>\""
     ]
-  },
-  "nyc": {
-    "include": [
-      "src/**"
-    ],
-    "reporter": [
-      "lcov",
-      "text"
-    ],
-    "all": true,
-    "cache": true,
-    "sourceMap": false,
-    "instrument": false
   },
   "peerDependencies": {
     "graphbrainz": "^8.0.3"
   },
   "dependencies": {
-    "dataloader": "^1.4.0",
-    "debug": "^3.1.0",
-    "graphql-relay": "^0.5.5",
+    "dataloader": "^2.0.0",
+    "debug": "^4.3.1",
+    "graphql-relay": "^0.6.0",
     "lodash.chunk": "^4.2.0",
     "lodash.maxby": "^4.6.0",
-    "lru-cache": "^4.1.3",
-    "qs": "^6.5.2"
+    "lru-cache": "^6.0.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
-    "ava-nock": "^1.0.0",
-    "babel-cli": "^6.26.0",
-    "babel-plugin-istanbul": "^4.1.6",
-    "babel-plugin-syntax-object-rest-spread": "^6.13.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
-    "coveralls": "^3.0.2",
-    "cross-env": "^5.2.0",
-    "dotenv": "^6.0.0",
-    "eslint": "^5.3.0",
-    "eslint-config-prettier": "^3.0.1",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-prettier": "^2.6.2",
-    "eslint-plugin-promise": "^3.8.0",
-    "eslint-plugin-standard": "^3.1.0",
-    "glob": "^7.1.2",
-    "graphbrainz": "^8.0.3",
-    "graphql": "^0.13.2",
-    "graphql-markdown": "^4.1.0",
-    "husky": "^0.14.3",
-    "lint-staged": "^7.2.0",
-    "nodemon": "^1.18.3",
-    "nyc": "^12.0.2",
-    "prettier": "^1.14.0",
-    "rimraf": "^2.6.2"
+    "ava": "^3.15.0",
+    "ava-nock": "^2.1.0",
+    "c8": "^7.7.1",
+    "coveralls": "^3.1.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.24.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-promise": "^5.1.0",
+    "graphbrainz": "exogen/graphbrainz#chore/modernize-deps-and-imports",
+    "graphql": "^15.5.0",
+    "graphql-markdown": "^6.0.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^10.5.4",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
   }
 }

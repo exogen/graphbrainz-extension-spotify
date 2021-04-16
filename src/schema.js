@@ -1,6 +1,6 @@
-const gql = require('graphbrainz/lib/tag').default
+import { gql } from 'graphbrainz';
 
-module.exports = gql`
+export default gql`
   extend type Query {
     spotify: SpotifyQuery!
   }
@@ -579,4 +579,4 @@ module.exports = gql`
     """
     EXTERNALID
   }
-`
+`;
